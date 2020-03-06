@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/shared.dart';
+import './adddiray.dart';
+import './diarymodel.dart';
+import './eventbus.dart';
 
-void main() => runApp(MyApp());
+void main() => shareData.init().then((e) => runApp(MyApp()));
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -20,13 +24,13 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: DiaryListPage(title: '一本日记'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class DiaryListPage extends StatefulWidget {
+  DiaryListPage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -40,21 +44,87 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _DiaryListPageState createState() => _DiaryListPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _DiaryListPageState extends State<DiaryListPage> {
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+
+  Widget buildListWidget(BuildContext context, diaryitem diary, int index) {
+    return new GestureDetector(
+      onTap: (){
+        Navigator.push(
+          context,
+          new MaterialPageRoute(builder: (context) => new Adddiary(shareData.diaryList == null ? null : shareData.diaryList[index], index)),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.fromLTRB(8, 8, 8, 4),
+        child: new Row(
+          children: <Widget>[
+            new Container(
+              width: 80,
+              height: 60,
+              child: new Column(
+                children: <Widget>[
+                  new Text(
+                    diary.day,
+                    style: new TextStyle(
+                      fontSize: 28,
+                      color: Color(0xff607d88),
+                    ),
+                  ),
+                  new Text(
+                    '${diary.month}/${diary.week}',
+                    style: new TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                ],
+              ), 
+            ),
+            Expanded(
+              child: new Container(
+                constraints: BoxConstraints(
+                  minHeight: 60,
+                ),
+                padding: EdgeInsets.all(10),
+                color: Color(0xffF2F2F2),
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    
+                    new Text(
+                      diary.content,
+                      maxLines: 6,
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(
+                        fontSize: 16,
+                        color: Color(0xff607d88),
+                      ),
+                    ),
+                    new Text(
+                      diary.hourSecond,
+                      textAlign: TextAlign.left,
+                      style: new TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+            
+          ],
+        )
+        
+      ),
+    );
+
+    
   }
 
   @override
@@ -70,42 +140,32 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        actions: <Widget>[
+          new IconButton(
+            color: Colors.white,
+            icon: Icon(Icons.add, color: Colors.white), 
+            
+            onPressed: () { 
+              Navigator.push(
+                context,
+                new MaterialPageRoute(builder: (context) => new Adddiary(null, -1)),
+              ); 
+            },
+          )
+        ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+      body: Scrollbar(
+        
+        child: new ListView.builder(
+          
+          itemBuilder: (context, i){
+            return buildListWidget(context, shareData.diaryList == null ? null:shareData.diaryList[i], i);
+          },
+          itemCount: shareData.diaryList == null ? 0 : shareData.diaryList.length,
+        ), 
+
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      
     );
   }
 }
