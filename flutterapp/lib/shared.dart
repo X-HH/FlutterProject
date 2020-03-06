@@ -2,7 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './diarymodel.dart';
 
 class shareData {
-  static List<diaryitem> diaryList;
+  static List<diaryitem> diaryList = new List();
 
   static Future init() async {
     SharedPreferences prefs =  await SharedPreferences.getInstance();
@@ -15,8 +15,8 @@ class shareData {
       list.add(default2);
       list.add(default1);
       
-      addDiaryData(default1);
-      addDiaryData(default2);
+      saveDiaryData(default1);
+      saveDiaryData(default2);
     } else {
       if (contentList.length > 0) {
         for (var i = 0; i < contentList.length; i++) {
@@ -24,13 +24,11 @@ class shareData {
           list.add(item);
         }
       }
-    
     }
-    
     diaryList = list;
   }
 
-  static addDiaryData(diaryitem item) async {
+  static saveDiaryData(diaryitem item) async {
     SharedPreferences prefs =  await SharedPreferences.getInstance();
     List<String> contentList = prefs.getStringList('diarycontent');
     if (contentList == null) {
@@ -44,8 +42,11 @@ class shareData {
     timeList.insert(0, item.time);
     prefs.setStringList('diarycontent', contentList);
     prefs.setStringList('timeList', timeList);
+  }
+
+  static addDiaryData(diaryitem item) async {
+    saveDiaryData(item);
     diaryList.insert(0, item);
-    // diaryList.insert(0, item);
   }
 
   static replaceDiaryData(diaryitem item, int index) async {
