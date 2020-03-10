@@ -1,2 +1,11 @@
 #include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
-#include "Generated.xcconfig"
+//#include "Generated.xcconfig"
+FLUTTER_ROOT=/Users/xuhao/Documents/51NB/Flutter/flutter
+FLUTTER_APPLICATION_PATH=/Users/xuhao/Documents/mine/FlutterProject/flutterapp
+FLUTTER_TARGET=lib/main.dart
+FLUTTER_BUILD_DIR=build
+SYMROOT=${SOURCE_ROOT}/../build/ios
+FLUTTER_FRAMEWORK_DIR=/Users/xuhao/Documents/51NB/Flutter/flutter/bin/cache/artifacts/engine/ios
+FLUTTER_BUILD_NAME=1.0.0
+FLUTTER_BUILD_NUMBER=1
+FLUTTER_BUILD_MODE=debug
