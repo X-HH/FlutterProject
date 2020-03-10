@@ -10,6 +10,5 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = '8.0'
     s.vendored_frameworks   = 'build_for_ios/*.framework'
     s.source_files = 'build_for_ios/*.{h,m}'
-    
   end
   
