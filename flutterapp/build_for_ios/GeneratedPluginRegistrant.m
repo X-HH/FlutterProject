@@ -3,12 +3,17 @@
 //
 
 #import "GeneratedPluginRegistrant.h"
-#import <shared_preferences/SharedPreferencesPlugin.h>
+
+#if __has_include(<flutter_boost/FlutterBoostPlugin.h>)
+#import <flutter_boost/FlutterBoostPlugin.h>
+#else
+@import flutter_boost;
+#endif
 
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
-  [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
+  [FlutterBoostPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterBoostPlugin"]];
 }
 
 @end

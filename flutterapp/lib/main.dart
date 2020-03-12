@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/shared.dart';
+import 'package:flutter_boost/flutter_boost.dart';
 import './adddiray.dart';
 import './diarymodel.dart';
-import './eventbus.dart';
+
+
 
 void main() => shareData.init().then((e) => runApp(MyApp()));
 
@@ -11,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      builder: FlutterBoost.init(postPush: _onRoutePushed),
       title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
@@ -27,9 +30,12 @@ class MyApp extends StatelessWidget {
       home: DiaryListPage(title: '一本日记'),
     );
   }
+  void _onRoutePushed(String pageName, String uniqueId, Map params, Route route, Future _) {}
 }
 
 class DiaryListPage extends StatefulWidget {
+  @override
+
   DiaryListPage({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
@@ -48,7 +54,15 @@ class DiaryListPage extends StatefulWidget {
 }
 
 class _DiaryListPageState extends State<DiaryListPage> {
-
+  @override
+  void initState() {
+    super.initState();
+    FlutterBoost.singleton.registerPageBuilders({
+      'diaryList': (pageName, params, _) => DiaryListPage(),
+      'addDiary': (pageName, params, _) => Adddiary(null, -1),
+    });
+    FlutterBoost.singleton.addBoostNavigatorObserver(TestBoostNavigatorObserver());
+  }
 
   Widget buildListWidget(BuildContext context, diaryitem diary, int index) {
     return new GestureDetector(
@@ -136,6 +150,7 @@ class _DiaryListPageState extends State<DiaryListPage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
@@ -167,5 +182,25 @@ class _DiaryListPageState extends State<DiaryListPage> {
       ),
       
     );
+  }
+}
+
+
+class TestBoostNavigatorObserver extends NavigatorObserver{
+  void didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+
+    print("flutterboost#didPush");
+  }
+
+  void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+    print("flutterboost#didPop");
+  }
+
+  void didRemove(Route<dynamic> route, Route<dynamic> previousRoute) {
+    print("flutterboost#didRemove");
+  }
+
+  void didReplace({Route<dynamic> newRoute, Route<dynamic> oldRoute}) {
+    print("flutterboost#didReplace");
   }
 }
