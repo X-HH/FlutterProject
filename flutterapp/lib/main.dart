@@ -59,7 +59,7 @@ class _DiaryListPageState extends State<DiaryListPage> {
     super.initState();
     FlutterBoost.singleton.registerPageBuilders({
       'diaryList': (pageName, params, _) => DiaryListPage(),
-      'addDiary': (pageName, params, _) => Adddiary(null, -1),
+      'adddiary': (pageName, params, _) => Adddiary(null, -1),
     });
     FlutterBoost.singleton.addBoostNavigatorObserver(TestBoostNavigatorObserver());
   }

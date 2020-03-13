@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/shared.dart';
 import './diarymodel.dart';
+import './nativepg.dart';
 import './eventbus.dart';
 
 class Adddiary extends StatelessWidget {
@@ -22,16 +23,17 @@ class Adddiary extends StatelessWidget {
       home: new Scaffold(
         appBar: new AppBar(
           title: new Text('写日记'),
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () { Navigator.pop(context); },
-          ),
+          // leading: IconButton(
+          //     icon: Icon(Icons.arrow_back),
+          //     onPressed: () { Navigator.pop(context); },
+          // ),
           actions: <Widget>[
             new IconButton(
               color: Colors.white,
               // icon: Icon(Icons.save, color: Colors.white), 
               icon: ImageIcon(AssetImage('images/diaryadd.png')),
               onPressed: () { 
+                _doAction();
                 if (textContent.length > 0) {
                   if (_diaryIndex > -1) {
                     if (textContent != _diary.content) {
@@ -49,7 +51,6 @@ class Adddiary extends StatelessWidget {
                     // bus.emit('adddiary', 'add');
                     Navigator.pop(context);
                   }
-                  
                 } else {
                   showDialogWithText(context, '请输入日记内容，日记不能为空');
                 }
@@ -138,5 +139,8 @@ class Adddiary extends StatelessWidget {
     });
   }
 
+  Future<void> _doAction()  async {
+    String result = await dynativepg.call('adddiary', {'methodName': 'adddiary', 'content': 'test content'});
+  }
 }
 
