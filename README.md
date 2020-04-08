@@ -4,4 +4,4 @@
 - 与iOS的混合编程，使用了一个编译脚本编译并存放编译产物。新建podspec文件，建立pod私有库，供iOS使用pod方便引入Flutter工程的编译产物，达到混合编程的目的。
 - Flutter工程运行效果：
 
-![](https://xhhimages.oss-cn-beijing.aliyuncs.com/111.gif?Expires=1585550396&OSSAccessKeyId=TMP.3Kg1xD8E7ihRFmuKwAjwfgMyiThYJ4t3yo8wHjDkLcuLGR5oLghAtYf1Cu23zQrocFzATj6D9uRQr2JnSaAoeCdbj3R1r8&Signature=oZj8WENfJHndQ0b6sHqiXPyAGwU%3D)
+![](https://xhhimages.oss-cn-beijing.aliyuncs.com/111.gif?Expires=1586309323&OSSAccessKeyId=TMP.3Ki4GeRfnL8Jddnb23frNwMdymCU2L4S5tWgbMeY5VsispZuTjBA2HQzDVKDHptDxPhQgdqdXEdexkTBRXzE2aPieKQZ5o&Signature=jtPEv94mlouoG%2FgC9u7Xa8dnXKA%3D)
